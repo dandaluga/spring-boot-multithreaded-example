@@ -66,11 +66,17 @@ public class QueueProducerExampleApplication implements CommandLineRunner {
         ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
         List<Future<Producer>> tasks = new ArrayList<>();
 
+        // --------------------------------------------------------------------------------------------------------------
+        // Notes for multithreading separate worker tasks.
+        // --------------------------------------------------------------------------------------------------------------
+        // 1. You need to create the Producer from the spring context so that bean will be properly injected with it's
+        //    dependencies. You cannot use this: Producer producer = new Producer();
+        // 2. The Producer class must implement the Runnable interface so that it can be executed in a separate thread.
+        // 3. The Producer class needs to have a scope of prototype so that it is not a singleton. The singleton scope is
+        //    the default scope for a Spring bean. As a result, this class must have this annotation: @Scope("prototype")
+        // --------------------------------------------------------------------------------------------------------------
+
         for (int i = 0; i < numberOfRequests; i++) {
-            // Need to create the producer from the spring context so that bean will be properly injected with it's dependencies.
-            // Producer producer = new Producer();
-            // Also, the Producer class needs to have a scope of prototype so that it is not a singleton, which is the default scope.
-            // As a result, this class must have this annotation: @Scope("prototype")
             Producer producer = context.getBean(Producer.class);
             producer.setPayload(String.valueOf(i));
             Future<Producer> future = executorService.submit(producer, producer);
