@@ -4,18 +4,18 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.daluga</groupId>
-	<artifactId>spring-boot-messaging-producer-example</artifactId>
+	<artifactId>spring-boot-multithreaded-example</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>spring-boot-messaging-producer-example</name>
-	<description>Spring Boot Messaging Producer Example</description>
+	<name>spring-boot-multithreaded-example</name>
+	<description>Spring Boot Multithreaded Example</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.3.0.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>1.4.0.RELEASE</version>
+		<relativePath/>
 	</parent>
 
 	<properties>
@@ -33,16 +33,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jms</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-broker</artifactId>
 		</dependency>
 	</dependencies>
 	
