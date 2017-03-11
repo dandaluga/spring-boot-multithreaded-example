@@ -12,9 +12,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 @SpringBootApplication
 public class MultiThreadedExampleApplication implements CommandLineRunner {
@@ -41,9 +39,22 @@ public class MultiThreadedExampleApplication implements CommandLineRunner {
         LOGGER.debug("Spring Boot multithreaded example has started....");
         LOGGER.debug("Number of requests: " + numberOfRequests);
         LOGGER.debug("Number of threads: " + numberOfThreads);
+        LOGGER.debug("Number of processors: " + Runtime.getRuntime().availableProcessors());
 
         ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
-        List<WorkerThread> tasks = new ArrayList<>();
+
+        // TODO; This does not seem to work and need to research why.
+        // A java program can't terminate or exit while a normal thread is executing. So, left over threads
+        // waiting for a never-satisfied event can cause problems. However, if you have blocks that need
+        // to be executed (like a finally block to clean up resources) then you should not set daemon threads
+        // to true. It all depends on the context of your solution.
+//        ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads, threadFactory -> {
+//            Thread t = new Thread();
+//            t.setDaemon(true);
+//            return t;
+//        });
+
+        List<WorkerThread> tasks = new ArrayList<>(numberOfRequests);
 
         // --------------------------------------------------------------------------------------------------------------
         // Notes for multithreading separate worker tasks.
@@ -62,10 +73,12 @@ public class MultiThreadedExampleApplication implements CommandLineRunner {
             tasks.add(wt);
         }
 
+        // The problem with this approach is that this blocks until all threads have completed. As a result, you need
+        // to wait before all threads have executed before you see any of the results in the get() method.
         List<Future<String>> futures = executorService.invokeAll(tasks);
 
         for (Future<String> future : futures) {
-            String result = future.get();
+            String result = future.get(10000, TimeUnit.MILLISECONDS);
             LOGGER.debug("Thread reply results [" + result + "]");
         }
 
