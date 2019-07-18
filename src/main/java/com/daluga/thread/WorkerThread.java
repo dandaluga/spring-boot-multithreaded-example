@@ -33,7 +33,7 @@ public class WorkerThread implements Callable<String> {
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOGGER.error("An unexpected interrupt exception occurred!", e);
         }
 
         return "Request [" + request + "] " + createUUID();
