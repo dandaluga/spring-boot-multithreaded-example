@@ -8,6 +8,9 @@
 *.iml
 *.iws
 
+# VSCode File 
+.vscode/*
+
 # Mac
 .DS_Store
 

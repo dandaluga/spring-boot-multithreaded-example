@@ -8,7 +8,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +28,6 @@ public class MultiThreadedExampleApplication implements CommandLineRunner {
     private int numberOfThreads;
 
     public static void main(String[] args) {
-        SpringApplication application = new SpringApplication(MultiThreadedExampleApplication.class);
-        application.setApplicationContextClass(AnnotationConfigApplicationContext.class);
         SpringApplication.run(MultiThreadedExampleApplication.class, args);
     }
 
@@ -43,7 +40,7 @@ public class MultiThreadedExampleApplication implements CommandLineRunner {
 
         ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
 
-        // TODO; This does not seem to work and need to research why.
+        // TODO: This does not seem to work and need to research why.
         // A java program can't terminate or exit while a normal thread is executing. So, left over threads
         // waiting for a never-satisfied event can cause problems. However, if you have blocks that need
         // to be executed (like a finally block to clean up resources) then you should not set daemon threads
